@@ -52,4 +52,4 @@ Here are the articles:
 
 日本語版（Swift）:
 
-- [Swiftでブロックチェーンを実装してみる]()
+- [Swiftでブロックチェーンを実装してみる](https://qiita.com/shu223/items/ebe59325f36fbf25e3d6)
