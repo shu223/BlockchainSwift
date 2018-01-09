@@ -12,7 +12,7 @@
 
 import Foundation
 
-class BlockchainServer: NSObject {
+class BlockchainServer {
     
     let blockchain = Blockchain()
 
