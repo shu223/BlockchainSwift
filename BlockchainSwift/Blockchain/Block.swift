@@ -39,4 +39,8 @@ extension Data {
         CC_SHA256((self as NSData).bytes, CC_LONG(self.count), res.mutableBytes.assumingMemoryBound(to: UInt8.self))
         return res as Data
     }
+    
+    func hexDigest() -> String {
+        return self.map({ String(format: "%02x", $0) }).joined()
+    }
 }
