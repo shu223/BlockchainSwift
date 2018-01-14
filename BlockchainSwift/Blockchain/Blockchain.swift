@@ -84,8 +84,21 @@ class Blockchain {
     //   - hash(pp') の最初の4つが0となるような p' を探す
     //   - p は前のプルーフ、 p' は新しいプルーフ
     class func proofOfWork(lastProof: Int) -> Int {
-        // TODO: Shold be implemented!!!!
-        return 0
-    }    
+        var proof: Int = 0
+        while !validProof(lastProof: lastProof, proof: proof) {
+            proof += 1
+        }
+        return proof
+    }
+    
+    // Validates the Proof:
+    //   - Does hash(last_proof, proof) contain 4 leading zeroes?
+    class func validProof(lastProof: Int, proof: Int) -> Bool {
+        guard let guess = String("\(lastProof)\(proof)").data(using: .utf8) else {
+            fatalError()
+        }
+        let guess_hash = guess.sha256().hexDigest()
+        return guess_hash.prefix(4) == "0000"
+    }
 }
 
