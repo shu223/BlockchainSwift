@@ -46,11 +46,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func mineBtnTapped(_ sender: UIButton) {
-        let block = server.mine(recipient: myId)
-        let text = "New Block Forged"
-        logView.text = text + "\n" + logView.text
-        print(text+block.description())
-        updateChain()
-    }    
+        let startTime = CACurrentMediaTime()
+        let text = "Mining..."
+        self.logView.text = text + "\n" + self.logView.text
+
+        server.mine(recipient: myId, completion: { (block) in
+            let text = String(format: "New Block Forged (%.1f s)", CACurrentMediaTime() - startTime)
+            self.logView.text = text + "\n" + self.logView.text
+            print(text+block.description())
+            self.updateChain()
+        })
+    }
 }
 

@@ -22,24 +22,14 @@ class BlockchainServer {
     }
     
     // '/mine' endpoint
-    func mine(recipient: String) -> Block {
-        // We run the proof of work algorithm to get the next proof...
-        // 次のプルーフを見つけるためプルーフ・オブ・ワークアルゴリズムを使用する
-        let lastBlock = blockchain.lastBlock()
-        let lastProof = lastBlock.proof
-        let proof = Blockchain.proofOfWork(lastProof: lastProof)
-        
-        // We must receive a reward for finding the proof.
-        // The sender is "0" to signify that this node has mined a new coin.
-        // プルーフを見つけたことに対する報酬を得る
-        // 送信者は、採掘者が新しいコインを採掘したことを表すために"0"とする
-        blockchain.createTransaction(sender: "0", recipient: recipient, amount: 1)
-        
-        // Forge the new Block by adding it to the chain
-        // チェーンに新しいブロックを加えることで、新しいブロックを採掘する
-        let block = blockchain.createBlock(proof: proof)
-        
-        return block
+    func mine(recipient: String, completion: ((Block) -> Void)?) {
+        // mine in the background
+        DispatchQueue.global(qos: .default).async {
+            let block = self.blockchain.mine(recipient: recipient)
+            DispatchQueue.main.async(execute: {
+                completion?(block)
+            })
+        }
     }
     
     // '/chain' endpoint
