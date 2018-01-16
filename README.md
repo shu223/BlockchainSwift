@@ -8,7 +8,7 @@ This is an implementation of Blockchain in Swift 4 based on **this great article
 
 [Learn Blockchains by Building One – Hacker Noon](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
 
-Unfortunately, I haven't implemented all yet such as PoW, Consensus, etc.
+Unfortunately, I haven't completed the implemention. The "Consensus" part is missing.
 
 ## How to build
 
