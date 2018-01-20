@@ -11,10 +11,35 @@
 //      https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
 
 import Foundation
+import Swifter
 
 class BlockchainServer {
     
     let blockchain = Blockchain()
+    let server = HttpServer()
+
+    init(){
+        // メソッドはGETで、フルのブロックチェーンをリターンする/chainエンドポイントを作る
+        server["/chain"] = { req in
+            let response = Blockchain.ChainResponse(
+                chain: self.blockchain.chain,
+                length: self.blockchain.chain.count
+            )
+            guard let json = response.jsonObject else {
+                return .internalServerError
+            }
+            return .ok(.json(json))
+        }
+    }
+
+    func start(){
+        do {
+            // port5000でサーバーを起動する
+            try server.start(5000, forceIPv4: true)
+        } catch {
+            print("\(error)")
+        }
+    }
 
     // '/transactions/new' endpoint
     func send(sender: String, recipient: String, amount: Int) -> Int {

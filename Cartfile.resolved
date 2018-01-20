@@ -1,0 +1,4 @@
+github "Alamofire/Alamofire" "4.6.0"
+github "Thomvis/BrightFutures" "6.0.0"
+github "antitypical/Result" "3.2.4"
+github "httpswift/swifter" "e36920ecb73aaf70cf811f16b67ea50ce7abe7d1"
