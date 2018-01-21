@@ -10,8 +10,16 @@
 //      https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
 
 import Foundation
+import Swifter
+import Alamofire
+import BrightFutures
 
 class Blockchain {
+    
+    struct ChainResponse: Codable {
+        let chain: [Block]
+        let length: Int
+    }
 
     // an initial empty list to store transactions
     // トランザクションを納めるための空のリスト
@@ -20,7 +28,10 @@ class Blockchain {
     // an initial empty list to store our blockchain
     // ブロックチェーンを納めるための最初の空のリスト
     var chain: [Block] = []
-
+    
+    // ノード
+    private(set) var nodes = Set<String>()
+    
     init() {
         // Create the genesis block
         // ジェネシスブロックを作る
@@ -100,5 +111,100 @@ class Blockchain {
         let guess_hash = guess.sha256().hexDigest()
         return guess_hash.prefix(4) == "0000"
     }
+    
+    // ノードリストに新しいノードを加える
+    //   - ノードのアドレス 例: '192.168.0.5'
+    public func registerNode(address: String) {
+        nodes.insert("http://\(address):5000")
+    }
+    
+    // ブロックチェーンが正しいかを確認する
+    class func validChain(chain: [Block]) -> Bool {
+        guard chain.count > 0 else {
+            // genesis block exist
+            fatalError()
+        }
+        var lastBlock: Block = chain[0]
+        var currentIndex: Int = 1
+        while currentIndex < chain.count {
+            let block = chain[currentIndex]
+            print("\(lastBlock)")
+            print("\(block)")
+            print("\n--------------\n")
+            // ブロックのハッシュが正しいかを確認
+            if block.previousHash != lastBlock.hash() {
+                return false
+            }
+            
+            // プルーフ・オブ・ワークが正しいかを確認
+            if !validProof(lastProof: lastBlock.proof, proof: block.proof) {
+                return false
+            }
+            
+            lastBlock = block
+            currentIndex += 1
+        }
+        return true
+    }
+    
+    // これがコンセンサスアルゴリズムだ。ネットワーク上の最も長いチェーンで自らのチェーンを
+    // 置き換えることでコンフリクトを解消する。
+    // - return:  自らのチェーンが置き換えられると true 、そうでなれけば false
+    func resolveConflict(_ completion: @escaping (_ result: Bool) -> Void) {
+        var maxLength = self.chain.count
+        // 他のすべてのノードのチェーンを確認
+        self.nodes
+        .map({ Blockchain.getChain(node: $0)})
+        .sequence()
+        .onSuccess { (responses:[ChainResponse]) -> Void in
+            var newChain: [Block]? = nil
+            for res in responses {
+                // そのチェーンがより長いか、有効かを確認
+                if maxLength < res.length {
+                    if Blockchain.validChain(chain: res.chain) {
+                        maxLength = res.length
+                        newChain = res.chain
+                    } else {
+                        print("Invalid chain!")
+                    }
+                }
+            }
+            // もし自らのチェーンより長く、かつ有効なチェーンを見つけた場合それで置き換える
+            if let newChain = newChain {
+                self.chain = newChain
+                print("Long length chain found")
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+        .onFailure { (error: NSError) in
+            completion(false)
+            print("Failed to get neighbor node!")
+        }
+    }
+    
+    enum BlockChainError: Error {
+        case general
+    }
+
+    private static func getChain(node: String) -> Future<ChainResponse, NSError> {
+        let promise = Promise<ChainResponse, NSError>()
+        let queue = DispatchQueue(label: "request", attributes: .concurrent)
+        Alamofire.request("\(node)/chain").responseData(queue: queue, completionHandler: { response in
+            switch response.result {
+            case .success(let data):
+                if let res = try? JSONDecoder().decode(ChainResponse.self, from: data) {
+                    promise.success(res)
+                } else {
+                    promise.failure(BlockChainError.general as NSError)
+                }
+            case .failure(let error):
+                promise.failure(error as NSError)
+            }
+        })
+        return promise.future
+    }
+    
 }
 

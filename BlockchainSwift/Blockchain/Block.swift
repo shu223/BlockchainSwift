@@ -44,3 +44,16 @@ extension Data {
         return self.map({ String(format: "%02x", $0) }).joined()
     }
 }
+
+extension Encodable {
+    var jsonObject: AnyObject? {
+        let encoder = JSONEncoder()
+        guard let data:Data = try? encoder.encode(self) else {
+            return nil
+        }
+        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) else {
+            return nil
+        }
+        return json as AnyObject
+    }
+}

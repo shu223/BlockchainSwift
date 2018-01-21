@@ -1,0 +1,4 @@
+github "httpswift/swifter" "stable"
+github "Alamofire/Alamofire"
+github "antitypical/Result"
+github "Thomvis/BrightFutures"
