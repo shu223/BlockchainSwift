@@ -4,11 +4,11 @@ A simple Blockchain in Swift.
 
 ## What is this?
 
-This is an implementation of Blockchain in Swift 4 based on **this great article**:
+This is an implementation of Blockchain in Swift 4 based on **this great article** [^consensus]:
 
 [Learn Blockchains by Building One – Hacker Noon](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
 
-Unfortunately, I haven't completed the implemention. The "Consensus" part is missing.
+[^consensus]: The "Consensus" part is available in [feature/consensus](https://github.com/shu223/BlockchainSwift/tree/feature/consensus) branch.
 
 ## How to build
 
@@ -45,6 +45,7 @@ struct Block: Codable {
 Here are the articles:
 
 - [Learn Blockchains by Building One – Hacker Noon](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
+
 
 日本語版（Python）:
 
