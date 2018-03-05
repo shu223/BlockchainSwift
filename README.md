@@ -4,7 +4,7 @@ A simple Blockchain in Swift.
 
 ## What is this?
 
-This is an implementation of Blockchain in Swift 4 based on **this great article** [^consensus]:
+This is an implementation of Blockchain in Swift 4 based on **this great article** [^consensus]
 
 [Learn Blockchains by Building One – Hacker Noon](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
 
