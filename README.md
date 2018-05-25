@@ -4,11 +4,10 @@ A simple Blockchain in Swift.
 
 ## What is this?
 
-This is an implementation of Blockchain in Swift 4 based on **this great article** [^consensus]:
+This is an implementation of Blockchain in Swift 4 based on **this great article**:
 
 [Learn Blockchains by Building One – Hacker Noon](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
 
-[^consensus]: The "Consensus" part is available in [feature/consensus](https://github.com/shu223/BlockchainSwift/tree/feature/consensus) branch.
 
 ## How to build
 
@@ -54,3 +53,6 @@ Here are the articles:
 日本語版（Swift）:
 
 - [Swiftでブロックチェーンを実装してみる](https://qiita.com/shu223/items/ebe59325f36fbf25e3d6)
+
+
+*The "Consensus" part is available in the [feature/consensus](https://github.com/shu223/BlockchainSwift/tree/feature/consensus) branch.
