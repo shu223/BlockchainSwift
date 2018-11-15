@@ -1,17 +1,21 @@
 # BlockchainSwift
 
-A simple Blockchain in Swift.
+A simple Blockchain with Swift.
+
+[![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat
+)](http://mit-license.org)
+[![Twitter](https://img.shields.io/badge/twitter-@shu223-blue.svg?style=flat)](http://twitter.com/shu223)
 
 ## What is this?
 
-This is an implementation of Blockchain in Swift 4 based on **this great article**:
+This is an implementation of Blockchain with Swift based on **this great article**:
 
 [Learn Blockchains by Building One – Hacker Noon](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
 
 
 ## How to build
 
-- Open `BlockchainSwift.xcodeproj` with Xcode 9
+- Open `BlockchainSwift.xcodeproj` with Xcode
 - Build and Run!
 
 ![](blockchainsample.gif)
